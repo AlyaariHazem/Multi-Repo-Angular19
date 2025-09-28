@@ -1,14 +1,29 @@
-.product-div{
-    width: 70%;
-    border: 2px solid black;
-    border-radius: 10px;
-    margin-top: 20px;
-
+/* app.component.css */
+.layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-w, 280px) 1fr;  /* <-- uses CSS var */
+  min-height: calc(100vh - 64px);
 }
-.cart-div{
-    width: 30%;
-    border: 2px solid black;
-    border-radius: 10px;
-    margin-top: 20px;
-    height:fit-content;
+.layout__sidebar {
+  position: sticky;
+  top: 64px;
+  align-self: start;
+  height: calc(100vh - 64px);
+  z-index: 1000;              /* <-- ensure sidebar (and its children) are above content */
+  overflow: visible;          /* allow the knob to protrude */
+}
+
+.layout__content {
+  position: relative;
+  z-index: 100;               /* below the sidebar */
+}
+.layout__sidebar{ position: sticky; top:64px; align-self:start; height:calc(100vh - 64px); z-index:2; }
+.layout__content{ z-index:1; }
+:host ::ng-deep .p-panelmenu .p-panelmenu-header > a,
+:host ::ng-deep .p-panelmenu .p-panelmenu-header > a .p-menuitem-text,
+:host ::ng-deep .p-panelmenu .p-menuitem-link .p-menuitem-text,
+:host ::ng-deep .p-panelmenu .p-panelmenu-header > a .p-menuitem-icon,
+:host ::ng-deep .p-panelmenu .p-menuitem-link .p-menuitem-icon{
+  color: #ffffff !important;
+  opacity: 1 !important;
 }

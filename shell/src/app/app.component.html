@@ -1,11 +1,9 @@
 <app-header></app-header>
-<div style="display: flex; gap: 2rem;">
-  <div class="product-div" *ngIf="productComponent">
-    <ng-container *ngComponentOutlet="productComponent"></ng-container>
-  </div>
-
-  <div class="cart-div" *ngIf="cartComponent">
-    <ng-container *ngComponentOutlet="cartComponent"></ng-container>
-  </div>
+<div class="layout">
+  <aside class="layout__sidebar">
+    <app-sidebar></app-sidebar>
+  </aside>
+  <main class="layout__content">
+    <router-outlet></router-outlet>
+  </main>
 </div>
-<app-footer></app-footer>
