@@ -1,0 +1,75 @@
+{
+    "products": [
+      {
+        "id": 1,
+        "name": "Apples (1kg)",
+        "price": 2.5,
+        "quantity":0,
+        "img": "https://images.pexels.com/photos/39803/pexels-photo-39803.jpeg?cs=srgb&dl=food-healthy-apple-39803.jpg&fm=jpg"
+      },
+      {
+        "id": 2,
+        "name": "Bananas (6)",
+        "price": 1.2,
+        "quantity":0,
+        "img": "https://th.bing.com/th/id/OIP.-GfGzAn4iy8XVJ7ls6FsHgHaFv?rs=1&pid=ImgDetMain"
+      },
+      {
+        "id": 3,
+        "name": "Tomatoes (1kg)",
+        "price": 1.8,
+        "quantity":0,
+        "img": "https://hub.suttons.co.uk/wp-content/uploads/2018/03/VETOM25715_2738x1825.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Milk (1L)",
+        "price": 3.0,
+        "quantity":0,
+        "img": "https://www.healthkart.com/connect/wp-content/uploads/2022/07/900x500_thumbnail_HK-Vitamins-and-Minerals-in-Milk-.png"
+      },
+      {
+        "id": 5,
+        "name": "Bread (1p)",
+        "price": 2.0,
+        "quantity":0,
+        "img": "https://th.bing.com/th/id/OIP.mFfNRnCaTJJRENEyRyxe1gHaKX?rs=1&pid=ImgDetMain"
+      },
+      {
+        "id": 6,
+        "name": "Eggs (6)",
+        "price": 2.5,
+        "quantity":0,
+        "img": "https://th.bing.com/th/id/OIP.HSpU38tfSo0rDG92sN6BGQHaFB?rs=1&pid=ImgDetMain"
+      },
+      {
+        "id": 7,
+        "name": "Cheese (500g)",
+        "price": 4.0,
+        "quantity":0,
+        "img": "https://th.bing.com/th/id/R.aa964cf82f058d1f3ebee248b43fd12d?rik=Hdj8fd3EOPcDPg&riu=http%3a%2f%2fghk.h-cdn.co%2fassets%2fcm%2f15%2f11%2f54ff1f7753c29-ghk-best-diet-advice-cheese-s2.jpg&ehk=mf%2fOgTY81wQr5loCfmwXnGskydq6fHCk1dHw87VBRMQ%3d&risl=&pid=ImgRaw&r=0"
+      },
+      {
+        "id": 8,
+        "name": "Carrots (1kg)",
+        "price": 1.5,
+        "quantity":0,
+        "img": "https://media.healthyfood.com/wp-content/uploads/2019/07/The-lost-plot-growing-carrots-iStock-471680420-1024x838.jpg"
+      },
+      {
+        "id": 9,
+        "name": "Potatoes (1kg)",
+        "price": 1.0,
+        "quantity":0,
+        "img": "https://th.bing.com/th/id/R.1746905e79820c611a75f362be285401?rik=Om5Rt8artWAu4A&riu=http%3a%2f%2fwww.valleyspuds.com%2fwp-content%2fuploads%2fRusset-Potatoes-cut.jpg&ehk=%2f9WbC1j%2fDMKQkwnb8Q9l7NfVGeVMrHuQmCWM%2fR9kpg8%3d&risl=&pid=ImgRaw&r=0"
+      },
+      {
+        "id": 10,
+        "name": "Orange Juice (1L)",
+        "price": 3.5,
+        "quantity":0,
+        "img": "https://thestudiocafe.ie/wp-content/uploads/2021/03/iStock-825882916-1.jpg"
+      }
+    ]
+  
+}

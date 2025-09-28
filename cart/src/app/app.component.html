@@ -1,0 +1,15 @@
+<nav  class="cart-nav">
+  <h1>Cart</h1>
+</nav>
+<ng-container *ngIf="itemAvailable;else noItemsInTheCart">
+  <div *ngFor="let item of cartItems;let i=index">
+    <img class="cart-img" [src]="item.img" alt="img not found!" /> <sup>{{item.quantity}}</sup>
+    <p>{{ item.price | currency }}</p>
+    <button (click)="removeItem(i)">Remove</button>
+  </div>
+</ng-container>
+
+<!--when cart is empty-->
+<ng-template #noItemsInTheCart>
+  <p>Cart is empty!</p>
+</ng-template>

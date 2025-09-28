@@ -1,0 +1,7 @@
+<!--Displaying the entire products-->
+<nav class="prod-nav"><h1>Products</h1></nav>
+  <div *ngFor="let product of products;let i=index">
+    <img [src]="product.img" alt="not found">
+    <p>{{ product.name }} - {{ product.price }}</p>
+    <button (click)="addToCart(product)">Add to Cart</button>
+  </div>

@@ -1,0 +1,11 @@
+.header-nav{
+    background-color: green;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    padding-left: 40%;
+    color: white;
+}
+/* .grocery-header{
+    text-align: center;
+} */

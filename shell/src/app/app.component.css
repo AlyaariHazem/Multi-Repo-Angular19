@@ -1,0 +1,14 @@
+.product-div{
+    width: 70%;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-top: 20px;
+
+}
+.cart-div{
+    width: 30%;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin-top: 20px;
+    height:fit-content;
+}
