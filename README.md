@@ -1,273 +1,216 @@
-Multi-Repo-Angular19
+# Multi-Repo Angular 19 (Module Federation)
 
-Microfrontend application for managing company modules, built with Angular 19, Module Federation, and a multi-repo layout.
+A minimal **micro‑frontend** setup with three apps:
 
-Repos/dirs in this monorepo:
+- **shell/** – host application (router/layout)
+- **product/** – remote MFE
+- **cart/** – remote MFE
 
-shell/ – host app (router, layout, shared auth/guards)
+Works locally (localhost ports) and in prod (subdomains) using a small URL resolver that always loads **`remoteEntry.js`**.
 
-product/ – remote MFE (Products)
+---
 
-cart/ – remote MFE (Cart)
+## 1) Prerequisites
 
-✨ Features
+- Node.js **18+**
+- npm **9+** (or pnpm/yarn)
 
-Angular 19 + Standalone/NgModules hybrid
+---
 
-Webpack Module Federation with @angular-architects/module-federation
+## 2) Install
 
-Local/Server URL resolver with automatic remoteEntry.js handling
+From repo root, install each app:
 
-SCSS styling (optional; instructions below)
-
-PrimeNG/Bootstrap ready
-
-Route composition from host with per-feature child routes
-
-📦 Tech Stack
-
-Angular 19
-
-Webpack 5, Module Federation
-
-@angular-architects/module-federation
-
-ngx-build-plus (where used)
-
-TypeScript
-
-🗂️ Repo Structure
-/
-├── shell/                      # Host application
-│   ├── src/
-│   ├── angular.json
-│   └── webpack.config.js
-├── product/                    # Remote: products
-│   ├── src/
-│   ├── angular.json
-│   └── webpack.config.js
-├── cart/                       # Remote: cart
-│   ├── src/
-│   ├── angular.json
-│   └── webpack.config.js
-└── README.md
-
-🔧 Prerequisites
-
-Node.js 18+ (recommended LTS)
-
-npm 9+ (or pnpm/yarn if you prefer)
-
-Git
-
-🚀 Getting Started (Local Dev)
-
-Each app is an independent Angular project. Install & run inside each folder.
-
-Install dependencies
-
-# from repo root
+```bash
 cd shell && npm i
 cd ../product && npm i
 cd ../cart && npm i
+```
 
+---
 
-Start the remotes first, then the shell
+## 3) Run (Local Development)
 
-Default (example) ports used in this repo:
+> Start **remotes first**, then the **shell**.
 
-product: 4201
+Default dev ports (change if your config differs):
 
-cart: 4202 (or 4203 in some setups)
+- **product** → http://localhost:4201
+- **cart** → http://localhost:4202
+- **shell** → http://localhost:4203
 
-shell: 4200
-
+```bash
 # terminal 1
-cd product
-npm start    # serves on http://localhost:4201
+cd product && npm start
 
 # terminal 2
-cd cart
-npm start    # serves on http://localhost:4202  (adjust if your config is 4203)
+cd cart && npm start
 
 # terminal 3
-cd shell
-npm start    # serves on http://localhost:4200
+cd shell && npm start
+```
 
+Open: **http://localhost:4203**
 
-If your remote uses a different port, update it in the environment or localDevPorts mapping in the URL resolver (see “URL Resolution” below).
+---
 
-🧩 Module Federation
-Remote exposes (example)
+## 4) Module Federation (What’s exposed)
 
-product/webpack.config.js
+**product/webpack.config.js**
+```js
+exposes: {
+  './Component': './src/app/app.component.ts',
+  './HomeModule': './src/app/home/home.module.ts'
+}
+```
 
-const { shareAll, withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack');
+**cart/webpack.config.js**
+```js
+exposes: {
+  './Component': './src/app/app.component.ts',
+  './HomeModule': './src/app/home/home.module.ts'
+}
+```
 
-module.exports = withModuleFederationPlugin({
-  name: 'products',
-  exposes: {
-    './Component': './src/app/app.component.ts',
-    './HomeModule': './src/app/home/home.module.ts',
-  },
-  shared: { ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }) },
-});
+> Ensure the file paths exist and the modules are exported.
 
+---
 
-cart/webpack.config.js
+## 5) How the Shell loads remotes
 
-module.exports = withModuleFederationPlugin({
-  name: 'cart',
-  exposes: {
-    './Component': './src/app/app.component.ts',
-    './HomeModule': './src/app/home/home.module.ts',
-  },
-  shared: { ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }) },
-});
+Always load the **federation container** (`remoteEntry.js`) with `loadRemoteModule`:
 
-Shell consumption
-
-Use loadRemoteModule and always point to remoteEntry.js:
-
+```ts
 import { loadRemoteModule } from '@angular-architects/module-federation';
 import { getRemoteUrl, RemoteApps } from 'src/environments/env-remotes-resolver';
 
 const productsRemote = getRemoteUrl(RemoteApps.products, 'remoteEntry.js');
 
-{
-  path: 'products/modules',
-  loadChildren: () =>
-    loadRemoteModule({
-      type: 'module',
-      remoteEntry: productsRemote,
-      exposedModule: './HomeModule',
-    }).then(m => m.HomeModule),
-}
+export const routes = [
+  {
+    path: 'products/modules',
+    loadChildren: () =>
+      loadRemoteModule({
+        type: 'module',
+        remoteEntry: productsRemote,
+        exposedModule: './HomeModule',
+      }).then(m => m.HomeModule),
+  },
+];
+```
 
-🌐 URL Resolution (Local vs Server)
+**Why `remoteEntry.js`?**  
+It’s the MF container (manifest). Loading plain chunks like `productsModule.js` won’t register exposes or shared libs.
 
-We use a resolver like:
+---
 
-// getRemoteUrl(app, 'remoteEntry.js')
-//
-// - If running on localhost and env points to localhost, use that.
-// - Otherwise, if localhost but no env URL, use localhost:<port> for the app.
-// - On a real domain, generate: https://<subdomain>.<root-domain>/remoteEntry.js
+## 6) URL Resolver (Local vs Prod)
 
+- On **localhost**, the resolver returns `http://localhost:<port>/remoteEntry.js`.
+- On **prod**, it returns `https://<subdomain>.<root-domain>/remoteEntry.js`.
+- No subdomain is added on localhost (avoids `cart-remote.localhost:4202`).
 
-Important: Do not point to cartModule.js or similar. Hosts must load the federation container: remoteEntry.js.
+If your local ports differ, update the `localDevPorts` map in `env-remotes-resolver.ts`.
 
-If you saw URLs like http://cart-remote.localhost:4203/..., the resolver has been fixed to avoid subdomains on localhost. On localhost it should use http://localhost:<port>/remoteEntry.js.
+---
 
-🧭 Routing Guidelines
+## 7) Routing Rules (keep it simple)
 
-The shell owns the top-level routes (e.g. /products, /cart, /workflow, etc.).
+- The **shell** owns top-level paths (`/products`, `/cart`, …).
+- Remotes should **not** repeat their own prefix.
+- Typical remote routes:
 
-Each remote should not repeat its own prefix; it should expose child routes starting at '' → modules, etc.
-
-Example remote routes:
-
+```ts
 // remote: src/app/app.routes.ts
-export const routes: Routes = [
+export const routes = [
   { path: '', redirectTo: 'modules', pathMatch: 'full' },
   { path: 'modules', loadChildren: () => import('./home/home.module').then(m => m.HomeModule) },
 ];
+```
 
+- Layout components used as route parents **must** include `<router-outlet>`.
 
-Example shell composition (child routes under a layout with <router-outlet>):
+---
 
-{
-  path: 'cart',
-  component: HelpdeskLayoutComponent, // must contain <router-outlet>
-  children: [
-    {
-      path: '',
-      loadChildren: () =>
-        loadRemoteModule({
-          type: 'module',
-          remoteEntry: getRemoteUrl(RemoteApps.cart, 'remoteEntry.js'),
-          exposedModule: './HomeModule',
-        }).then(m => m.HomeModule),
-    },
-  ],
-}
+## 8) Switch to SCSS (optional)
 
-🎨 Switch to SCSS (optional but recommended)
-
-Install Sass
-
+```bash
 npm i -D sass
+```
 
+In each app’s `angular.json`:
 
-Update angular.json in each project:
-
-Set "styles": ["src/styles.scss"]
-
-Optionally set default style for new components:
-
-"schematics": { "@schematics/angular:component": { "style": "scss" } }
-
+- `"styles": ["src/styles.scss"]`
+- (optional) `"schematics": { "@schematics/angular:component": { "style": "scss" } }`
 
 Rename:
 
-src/styles.css → src/styles.scss
+- `src/styles.css` → `src/styles.scss`
+- `*.component.css` → `*.component.scss`
+- update `styleUrls` accordingly.
 
-*.component.css → *.component.scss
+---
 
-Update styleUrls to .scss
+## 9) Build
 
-🧪 Scripts (typical)
+```bash
+# in product
+npm run build
+# in cart
+npm run build
+# in shell
+npm run build
+```
 
-From inside each project folder:
+Deploy **remotes** so their `remoteEntry.js` is publicly reachable, then deploy **shell**.
 
+---
+
+## 10) Common Issues (quick fixes)
+
+- **404 for `remoteEntry.js`**  
+  Remote not running or wrong port/URL. Fix port or resolver.
+
+- **“Cannot find module './HomeModule'”**  
+  Check `exposes` path and export name in remote webpack config.
+
+- **Blank page under a layout**  
+  Parent component missing `<router-outlet>` or a guard blocks the route.
+
+---
+
+## Scripts (typical)
+
+Inside each app:
+
+```bash
 npm start      # dev server
 npm run build  # production build
-npm test       # unit tests (if configured)
+npm test       # if configured
+```
 
-🛠 Troubleshooting
+---
 
-404 for remoteEntry.js
-Make sure the remote is running on the expected port and getRemoteUrl(RemoteApps.X, 'remoteEntry.js') matches it.
+## License
 
-Can’t find exposed module ./HomeModule
-Check the remote’s webpack.config.js exposes path and file name (e.g., ./src/app/home/home.module.ts). Ensure HomeModule is exported.
+MIT License
 
-Blank page under a layout
-Verify the layout component’s template has <router-outlet>.
+Copyright (c) 2025 AlyaariHazem
 
-Subdomain on localhost
-Resolver should not prepend subdomains when hostname is localhost. Use the updated resolver that picks http://localhost:<port>.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-🔐 Auth / Guards
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-Shell ships with AuthenticatedGuard (example). Ensure it’s provided and applied where needed. If a route doesn’t render, confirm the guard isn’t blocking.
-
-📦 Build & Deploy (prod)
-
-Build each remote:
-
-cd product && npm run build
-cd ../cart && npm run build
-
-
-Host the build artifacts (e.g., Nginx or static hosting).
-Ensure the remoteEntry.js files are reachable at the expected subdomains/paths in production.
-
-Build the shell:
-
-cd ../shell && npm run build
-
-
-Deploy shell to your main domain; remotes to their subdomains or CDN paths per your resolver rules.
-
-📜 License
-
-Private repository – internal use only.
-
-🤝 Contributing
-
-Create feature branches from main.
-
-Use conventional commit messages where possible.
-
-Open a PR with a clear description and testing steps.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
