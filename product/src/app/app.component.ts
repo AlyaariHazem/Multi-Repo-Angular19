@@ -6,7 +6,7 @@ import { GroceriesService } from './services/groceries.service';
   selector: 'app-root',
   imports: [CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit{
   products:any = [];
@@ -16,8 +16,8 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     this.groceries.getGroceries().subscribe(data => {
       this.products = data;
-      console.log(this.products);    
-    });   
+      console.log(this.products);
+    });
   }
 
   //method to send the product details to the cart
@@ -26,6 +26,6 @@ export class AppComponent implements OnInit{
     const event = new CustomEvent('add-to-cart', { detail: product }); //creating a custom browser/window event to pass the data
     window.dispatchEvent(event); //to dispatch the data (in the form of event)
     console.log("add to cart called");
-    
+
   }
 }

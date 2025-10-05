@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 export class CardsHomeComponent {
   constructor(private router: Router) {}
 
-  go(path: string) {
+  navigate(path: string) {
     this.router.navigate([path]);
   }
 }

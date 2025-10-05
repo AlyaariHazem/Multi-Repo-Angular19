@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-home',
   imports: [CommonModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class HomeComponent {
   title = 'cart';
   cartItems: any = [];
   itemAvailable = false; //to know whether cart is empty or not
@@ -46,4 +45,6 @@ export class AppComponent implements OnInit, OnDestroy {
   removeItem(index: any) {
     this.cartItems.splice(index, 1);
   }
-}
+
+ }
+

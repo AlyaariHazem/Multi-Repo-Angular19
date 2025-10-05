@@ -2,11 +2,12 @@ const { shareAll, withModuleFederationPlugin } = require('@angular-architects/mo
 
 module.exports = withModuleFederationPlugin({
 
-  name: 'cart',
+  name: 'cartModule.js',
 
   //exposing Cart component
   exposes: {
     './Component': './src/app/app.component.ts',
+    './HomeModule':'./src/app/home/home.module',
   },
 
   shared: {
