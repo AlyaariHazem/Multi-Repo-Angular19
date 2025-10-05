@@ -3,12 +3,17 @@ import { Routes } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/module-federation';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'home' },
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
 
   {
     path: 'home',
     loadComponent: () =>
       import('./pages/cards-home/cards-home.component').then(m => m.CardsHomeComponent),
+  },
+  {
+    path:'login',
+    loadComponent: () =>
+      import('./pages/auth/Login/login.component').then(m => m.LoginComponent),
   },
 
   // Remote: PRODUCTS
@@ -33,5 +38,5 @@ export const routes: Routes = [
     }).then(m => m.AppComponent),
 },
 
-  { path: '**', redirectTo: 'home' },
+  { path: '**', redirectTo: 'login' },
 ];
