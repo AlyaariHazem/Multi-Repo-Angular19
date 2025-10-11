@@ -2,7 +2,7 @@ import { loadRemoteModule } from '@angular-architects/module-federation';
 import { Route } from '@angular/router';
 import { getRemoteUrl, RemoteApps } from '../../environments/env-remotes-resolver';
 // import { environment } from 'src/environments/environment';
-const productsRemoteEntry = getRemoteUrl(RemoteApps.products, 'remoteEntry.js');
+const productsRemoteEntry = getRemoteUrl(RemoteApps.products);
 export const productsRoutes: Route[] = [
  { path: '', redirectTo: 'modules', pathMatch: 'full' },
 

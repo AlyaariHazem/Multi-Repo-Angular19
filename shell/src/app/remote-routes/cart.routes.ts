@@ -2,7 +2,7 @@ import { loadRemoteModule } from '@angular-architects/module-federation';
 import { Route } from '@angular/router';
 import { getRemoteUrl, RemoteApps } from '../../environments/env-remotes-resolver';
 // import { environment } from 'src/environments/environment';
-const cartRemoteEntry = getRemoteUrl(RemoteApps.cart, 'remoteEntry.js');
+const cartRemoteEntry = getRemoteUrl(RemoteApps.cart);
 export const cartRoutes: Route[] = [
  { path: '', redirectTo: 'modules', pathMatch: 'full' },
 

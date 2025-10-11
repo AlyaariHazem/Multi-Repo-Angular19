@@ -14,10 +14,7 @@ export class AppComponent implements OnInit{
 
   //to initialize the products array on Component Initialization
   ngOnInit(): void {
-    this.groceries.getGroceries().subscribe(data => {
-      this.products = data;
-      console.log(this.products);
-    });
+    
   }
 
   //method to send the product details to the cart
