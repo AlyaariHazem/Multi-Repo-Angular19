@@ -16,6 +16,7 @@
         [(ngModel)]="formModel.userName"
         #userName="ngModel"
         required
+        class="w-full"
         minlength="3"
         maxlength="22"
       />
@@ -43,6 +44,7 @@
         [minlength]="3"
         [maxlength]="22"
         [inputStyle]="{ width: '100%' }"
+        styleClass="w-full"
       ></p-password>
       @if (password.errors?.['required']) {
         <small class="p-error">كلمة السر مطلوبة</small>

@@ -1,10 +1,23 @@
-<!--Displaying the entire products-->
-<nav class="prod-nav"><h1>Products</h1></nav>
+<section class="products">
+  <header class="products__bar">
+    <h1 class="products__title">Products</h1>
+  </header>
 
-@for(product of products;track product; let i=$index){
-  <div>
-    <img [src]="product.img" alt="not found">
-    <p>{{ product.name }} - {{ product.price }}</p>
-    <button (click)="addToCart(product)">Add to Cart</button>
+  <div class="products__grid">
+    @for (product of products; track product) {
+      <article class="card" tabindex="0">
+        <figure class="card__media">
+          <img [src]="product.img" [alt]="product.name" loading="lazy" />
+          <span class="card__price-pill">${{ product.price }}</span>
+          <button class="card__quick btn" (click)="addToCart(product)">
+            Add to Cart
+          </button>
+        </figure>
+
+        <div class="card__body">
+          <h2 class="card__name" title="{{product.name}}">{{ product.name }}</h2>
+        </div>
+      </article>
+    }
   </div>
-}
+</section>

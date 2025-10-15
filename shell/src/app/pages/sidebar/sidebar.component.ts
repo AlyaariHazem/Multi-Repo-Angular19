@@ -33,12 +33,12 @@ export class SidebarComponent {
     {
       label: 'Products',
       icon: 'pi pi-shopping-bag',
-      command: () => this.router.navigate(['/products']),
+      command: () => this.router.navigate(['layout/products']),
     },
     {
       label: 'Cart',
       icon: 'pi pi-shopping-cart',
-      command: () => this.router.navigate(['/cart']),
+      command: () => this.router.navigate(['layout/cart']),
     },
   ];
 }

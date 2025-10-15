@@ -4,6 +4,10 @@ import { ShellRemoteRoutes } from './shell-remote.routes';
 export const routes: Routes = [
   {
     path: '',
+    redirectTo: 'login', pathMatch: 'full'
+  },
+  {
+    path:'layout',
     children: [...ShellRemoteRoutes],
   },
   {

@@ -17,6 +17,7 @@ import { MessageService } from 'primeng/api';
 
 import { User } from '../../../core/model/user.model';
 import { AuthAPIService } from '../authAPI.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -40,6 +41,7 @@ import { AuthAPIService } from '../authAPI.service';
 export class LoginComponent {
   private authService = inject(AuthAPIService);
   private messageService = inject(MessageService);
+  private router = inject(Router);
 
   // loading/dialog
   isLoading = false;
@@ -78,7 +80,8 @@ export class LoginComponent {
       });
       return;
     }
-
+    this.router.navigateByUrl('/layout');
+    
     this.showDialog();
 
     this.authService.login(user).subscribe({

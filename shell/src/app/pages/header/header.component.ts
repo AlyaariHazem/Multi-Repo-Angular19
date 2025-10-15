@@ -16,8 +16,20 @@ export class HeaderComponent {
   constructor(private router: Router) {}
 
   items = [
-    { label: 'Home',     icon: 'pi pi-home',     command: () => this.router.navigate(['/home']) },
-    { label: 'Products', icon: 'pi pi-shopping-bag', command: () => this.router.navigate(['/products']) },
-    { label: 'Cart',     icon: 'pi pi-shopping-cart', command: () => this.router.navigate(['/cart']) },
+    {
+      label: 'Home',
+      icon: 'pi pi-home',
+      command: () => this.router.navigate(['layout/home']),
+    },
+    {
+      label: 'Products',
+      icon: 'pi pi-shopping-bag',
+      command: () => this.router.navigate(['layout/products']),
+    },
+    {
+      label: 'Cart',
+      icon: 'pi pi-shopping-cart',
+      command: () => this.router.navigate(['layout/cart']),
+    },
   ];
 }
