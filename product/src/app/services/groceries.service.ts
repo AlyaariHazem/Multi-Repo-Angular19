@@ -1,17 +1,25 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { IProduct } from '../shared/models/products.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class GroceriesService {
+  constructor(private http: HttpClient) {}
 
-  groceryArray:any=[];
-  jsonUrl='http://localhost:3000/products'
-  constructor(private http:HttpClient) {}
-  //method to get the product details from the json
-  getGroceries(): Observable<any[]> {
-    return this.http.get<any[]>(this.jsonUrl);
+  getGroceries(): Observable<IProduct[]> {
+    return this.http
+      .get<{ products: any[] }>('https://dummyjson.com/products/category/groceries')
+      .pipe(
+        map(({ products }) =>
+          products.map(p => ({
+            id: p.id,
+            name: p.title,
+            price: p.price,          // DummyJSON has a numeric price
+            img: p.thumbnail ?? p.images?.[0] ?? 'https://placehold.co/600x400'
+          }))
+        )
+      );
   }
 }
