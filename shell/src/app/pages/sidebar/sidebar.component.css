@@ -3,6 +3,8 @@
   position: relative;
   overflow: visible;                 /* let knob hang outside */
   height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: linear-gradient(180deg, #283b7b 0%, #1d3165 100%);
   color: #fff;
   padding: 14px 12px;

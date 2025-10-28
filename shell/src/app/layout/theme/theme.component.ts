@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ThemeService } from './theme.service';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
   selector: 'app-theme',
-  imports: [CommonModule,SharedModule],
+  imports: [CommonModule],
   templateUrl: './theme.component.html',
   styleUrls: ['./theme.component.css']
 })

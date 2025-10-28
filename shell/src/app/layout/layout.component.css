@@ -1,30 +1,44 @@
-/* app.component.css */
-.layout {
-  display: grid;
-  grid-template-columns: var(--sidebar-w, 280px) 1fr;  /* <-- uses CSS var */
-  min-height: calc(100vh - 64px);
-}
-.layout__sidebar {
-  position: sticky;
-  top: 64px;
-  align-self: start;
-  height: calc(100vh - 64px);
-  z-index: 1000;              /* <-- ensure sidebar (and its children) are above content */
-  overflow: visible;          /* allow the knob to protrude */
+/* HEADER: fixed at top, explicit height */
+.header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 64px;               /* fixed header height */
+  z-index: 1100;
 }
 
+/* LAYOUT GRID: pushed below the fixed header */
+.layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-w, 280px) 1fr; 
+  min-height: calc(100vh - 64px);
+  padding-top: 64px;                 /* sit under the header */
+}
+
+/* SIDEBAR SLOT: sticky + fixed height + own scroll */
+.layout__sidebar {
+  position: sticky;
+  top: 64px;                         /* starts right under the header */
+  height: calc(100vh - 64px);        /* fixed relative to viewport */
+  overflow-y: auto;                   /* internal scroll */
+  z-index: 1000;
+  /* let children that protrude (like the round toggle) be visible */
+  overflow-x: visible;
+}
+
+/* CONTENT AREA */
 .layout__content {
   position: relative;
-  margin:1rem;
-  z-index: 100;               /* below the sidebar */
+  z-index: 100;
+  padding: 1rem;
+  margin: 0;                         /* keep tight; you can add spacing as needed */
 }
-.layout__sidebar{ position: sticky; top:64px; align-self:start; height:calc(100vh - 64px); z-index:2; }
-.layout__content{ z-index:1; }
+
+/* PrimeNG colors override sample (keep if you need white text) */
 :host ::ng-deep .p-panelmenu .p-panelmenu-header > a,
 :host ::ng-deep .p-panelmenu .p-panelmenu-header > a .p-menuitem-text,
 :host ::ng-deep .p-panelmenu .p-menuitem-link .p-menuitem-text,
 :host ::ng-deep .p-panelmenu .p-panelmenu-header > a .p-menuitem-icon,
-:host ::ng-deep .p-panelmenu .p-menuitem-link .p-menuitem-icon{
+:host ::ng-deep .p-panelmenu .p-menuitem-link .p-menuitem-icon {
   color: #ffffff !important;
   opacity: 1 !important;
 }

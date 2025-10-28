@@ -81,7 +81,7 @@ export class LoginComponent {
       return;
     }
     this.router.navigateByUrl('/layout');
-    
+
     this.showDialog();
 
     this.authService.login(user).subscribe({
